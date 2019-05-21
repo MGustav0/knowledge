@@ -1,6 +1,8 @@
 <template>
 	<div id="app">
-		<Header title="Cod3r - Base de Conhecimento" :hideToggle="false" />
+		<Header title="Cod3r - Base de Conhecimento" 
+		:hideToggle="false"
+		:hideUserDropdown="false" />
 		<Menu />
 		<Content />
 		<Footer />
@@ -9,6 +11,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Header from "./components/template/Header"
 import Menu from "@/components/template/Menu" /**Usar o @ permite começar em SRC, na raiz da pasta */
 import Content from "@/components/template/Content"
@@ -16,7 +19,8 @@ import Footer from "@/components/template/Footer"
 
 export default {
 	name: "App",
-	components: { Header, Menu, Content, Footer }
+	components: { Header, Menu, Content, Footer },
+	computed: mapState (['isMenuVisible'])
 }
 </script>
 
