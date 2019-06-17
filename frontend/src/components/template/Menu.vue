@@ -1,10 +1,17 @@
 <template>
-    <aside class="menu"></aside>
+    <aside class="menu" v-show="isMenuVisible"></aside>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-    name: 'Menu'
+    name: 'Menu',
+    /** Mapeamos apenas o 'isMenuVisible', assim podemos passar um array com todas
+     * as propriedades do estado da aplicação da store.js que se quer mapear dentro
+     * do componente.
+     */
+    computed: mapState(['isMenuVisible'])
 }
 </script>
     

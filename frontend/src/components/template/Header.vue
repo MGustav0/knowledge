@@ -8,7 +8,7 @@
             <i class="fa fa-lg" :class="icon"></i>
         </a>
         <h1 class="title">
-            {{ title }}
+            <router-link to="/">{{ title }}</router-link>
         </h1>
         <!-- Se a propriedade "hideUserDropdown" for negada não é para esconder -->
         <UserDropdown v-if="!hideUserDropdown" />
@@ -30,12 +30,14 @@ export default {
     /**Para alternar entre duas imagens toggle (menu) */
     computed: {
         icon() {
-            return "fa-angle-left"
+            /**Caso seja verdaderiro retorna "fa-angle-left" se não o ícone altera para "fa-angle-down" */
+            return this.$store.state.isMenuVisible ? "fa-angle-left" : "fa-angle-down"
         }
     },
     methods: {
         toggleMenu() {
-            
+            /**Acessando a store.js */
+            this.$store.commit('toggleMenu')
         }
     }
 }
@@ -60,6 +62,11 @@ export default {
     }
 
     .title a {
+        color: #FFF;
+        text-decoration: none; /* Para que não fique com cara de link */
+    }
+
+    .title a:hover {
         color: #FFF;
         text-decoration: none; /* Para que não fique com cara de link */
     }

@@ -3,7 +3,12 @@ module.exports = app => {
 
     const save = (req, res) => {
         // o save inclui ou alterar a categoria 
-        const category = { ...req.body } // cria um clone usando o operador spread "..."
+        const category = {
+            id: req.body.id,
+            name: req.body.name,
+            parentId: req.body.parentId /**Para selecionar a categoria pai */
+        }
+
         // Caso o "id" nos parâmetros da requisição
         if(req.params.id) category.id = req.param.id
 
