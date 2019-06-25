@@ -3,24 +3,27 @@
         <b-form>
             <!-- Aponta para category.id, se tiver setado ele vai marcar -->
             <input id="category-id" type="hidden" v-model="category.id" />
-            <b-row>
-                <b-col xs="12">
-                    <b-form-group label="Nome:" label-for="category-name">
-                        <b-form-input id="category-name" type="text" 
-                            v-model="category.name" required :readonly="mode === 'remove'"
-                            placeholder="Informe o Nome da Categoria..." />
-                    </b-form-group>
-                </b-col>
-            </b-row>            
-            <b-row>
-                <b-col xs="12">
-                    <b-button variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-button>
-                    <b-button variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-button>
-                    <b-button class="ml-2" @click="reset">Cancelar</b-button>
-                </b-col>
-            </b-row>
+            <b-form-group label="Nome:" label-for="category-name">
+                <b-form-input id="category-name" type="text" 
+                    v-model="category.name" required :readonly="mode === 'remove'"
+                    placeholder="Informe o Nome da Categoria..." />
+            </b-form-group>
+            <b-form-group label="Categoria Pai:" label-for="category-parentId">
+            <!-- A lista de ":options" virá do script em "data" e dos "fields",
+                Vai receber o parentId, resultado da função "loadCategories()", com os items Id
+                e path. 
+                Não é campo obrigatório, portanto não conterá o "required" -->
+            <b-form-select v-if="mode === 'save'" id="category-parentId" :options="categories" 
+                v-model="category.parentId" />
+            <b-form-input v-else id="category-parentId" type="text" 
+                v-model="category.path" required readonly />
+            </b-form-group>
+            <b-button variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-button>
+            <b-button variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-button>
+            <b-button class="ml-2" @click="reset">Cancelar</b-button>
         </b-form>
         <hr>
+        <!-- Cria a lista de ":items" virá do script em "data" e dos "fields" -->
         <b-table hover striped :items="categories" :fields="fields">
             <template slot="actions" slot-scope="data">
                 <b-button variant="warning" @click="loadCategory(data.item)" class="mr-2">
@@ -57,8 +60,12 @@ export default {
         loadCategories() {
             const url = `${baseApiUrl}/categories`
             axios.get(url).then(res => {
-                this.categories = res.data
-                //console.log(this.categories)
+                this.categories = res.data.map(category => {
+                    /**Coloca o path no combobox e o ID, será o selecionado ao selecionar no combobox,
+                     * o combobox irá apontar para o parentId.
+                     */
+                    return { ...category, value: category.id, text: category.path }
+                })
             })
         },
         /**Tratando os eventos de salvar, excluir e cancelar */
@@ -71,7 +78,7 @@ export default {
             /**Se o id estiver setado, o método será "put", se não será "post" */
             const method = this.category.id ? 'put' : 'post'
             /**Colocar o id na url caso esteja setado */
-            const id = this.category.id ? `${this.category.id}` : ''
+            const id = this.category.id ? `/${this.category.id}` : ''
             axios[method](`${baseApiUrl}/categories${id}`, this.category)
                 .then(() => {
                     this.$toasted.global.defaultSuccess()
@@ -82,15 +89,15 @@ export default {
         remove() {
             const id = this.category.id
             axios.delete(`${baseApiUrl}/categories/${id}`)
-            .then(() => {
-                    this.$toasted.global.defaultSuccess()
-                    this.reset()
-            })
+                .then(() => {
+                        this.$toasted.global.defaultSuccess()
+                        this.reset()
+                })
             .catch(showError)
         },
         loadCategory(category, mode = 'save') {
             this.mode = mode
-            /**Fazendo um clone manualmente */
+            /**Fazendo um clone automaticamente */
             this.category = { ...category }
         }
     },

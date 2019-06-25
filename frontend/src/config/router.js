@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Home from '@/components/home/Home'
 import AdminPages from '@/components/admin/AdminPages'
+import ArticlesByCategory from '@/components/article/ArticlesByCategory'
 
 /**Registrando o componente */
 Vue.use(VueRouter)
@@ -17,6 +18,10 @@ const routes = [{
     name: 'adminPages',
     path: '/admin',
     component: AdminPages
+}, {
+    name: 'articlesByCategory',
+    path: '/categories/:id/articles',
+    component: ArticlesByCategory
 }]
 
 /**Instanciando e exportando o VueRouter */

@@ -2,7 +2,7 @@ module.exports = app => {
     const { existsOrError, notExistsOrError } = app.api.validation
 
     const save = (req, res) => {
-        // o save inclui ou alterar a categoria 
+        // o save inclui ou altera a categoria 
         const category = {
             id: req.body.id,
             name: req.body.name,
@@ -10,7 +10,7 @@ module.exports = app => {
         }
 
         // Caso o "id" nos parâmetros da requisição
-        if(req.params.id) category.id = req.param.id
+        if(req.params.id) category.id = req.params.id
 
         try {
             existsOrError(category.name, "Nome não informado.")

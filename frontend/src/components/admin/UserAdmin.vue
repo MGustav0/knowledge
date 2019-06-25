@@ -98,7 +98,7 @@ export default {
             /**Se o id estiver setado, o método será "put", se não será "post" */
             const method = this.user.id ? 'put' : 'post'
             /**Colocar o id na url caso esteja setado */
-            const id = this.user.id ? `${this.user.id}` : ''
+            const id = this.user.id ? `/${this.user.id}` : ''
             axios[method](`${baseApiUrl}/users${id}`, this.user)
                 .then(() => {
                     this.$toasted.global.defaultSuccess()
