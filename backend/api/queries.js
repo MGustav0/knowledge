@@ -1,5 +1,6 @@
-module.exports = { /**Para deixar as consultas mais específicas aqui */
-    /** estamos passando em id (linha 13 -> "?") o id da categoria (categoryId) da função getByCategory 
+module.exports = {
+    /**Para deixar as consultas mais específicas aqui */
+    /** estamos passando em id (linha 14 -> "?") o id da categoria (categoryId) da função getByCategory 
      * na "const" categories, que obteve nos parâmetros da requisição (const categoryId) 
      * sendo passado na "?". 
      * É necessário usar aspas duplas quando o nome é case sensitive (parentId).
@@ -11,7 +12,7 @@ module.exports = { /**Para deixar as consultas mais específicas aqui */
     categoryWithChildren: `
         WITH RECURSIVE subcategories (id) AS (
             SELECT id FROM categories WHERE id = ?
-            UION ALL
+            UNION ALL
             SELECT c.id FROM subcategories, categories c
                 WHERE "parentId" = subcategories.id
         )

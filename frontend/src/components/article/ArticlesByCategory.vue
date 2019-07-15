@@ -6,7 +6,7 @@
                 atualize de forma mais otimizada exatamente o que se precisa atualizar, prinmcipalmente uma
                 lista de elementos -->
             <li v-for="article in articles" :key="article.id">
-                {{ article.name }}
+                <ArticleItem :article="article"/>
             </li>
         </ul>
         <div class="load-more">
@@ -21,10 +21,11 @@
 import { baseApiUrl } from '@/global'
 import axios from 'axios'
 import PageTitle from '../template/PageTitle'
+import ArticleItem from './ArticleItem' /**Carrega os artigos de ArticleItem.vue */
 
 export default {
     name: 'ArticlesByCategory',
-    components: { PageTitle },
+    components: { PageTitle, ArticleItem },
     data: function() {
         return {
             category: {},
@@ -51,6 +52,22 @@ export default {
                 /**Caso não tenha mais artigos, ele vai ocultar o botão "Carregar mais" */
                 if(res.data.length === 0) this.loadMore = false
             })
+        }
+    },
+    /**Monitora as rotas, permite trocar de categoria e mostrar os artigos existentes */
+    watch: {
+        /**Zera o componente para exibir a nova categoria */
+        $route(to) {
+            /**Responde a cada mudança de rota */
+            this.category.id = to.params.id
+            /**Zerar o array de artigos */
+            this.articles = []
+            /**Zerar o atributo page */
+            this.page = 1
+            this.loadMore = true
+
+            this.getCategory()
+            this.getArticles()
         }
     },
     mounted() {
