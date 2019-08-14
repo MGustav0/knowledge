@@ -35,7 +35,7 @@ module.exports = app => {
             admin: user.admin,
             /**iat e exp, são nomes padrão do jwt */
             iat: now, //iat = emitido em -> issued at
-            exp: now + (60 * 60 * 24 * 300) // tokem válido por 300 dias
+            exp: now + (60 * 60 * 24 * 365) // tokem válido por 300 dias
         }
 
         /**Gerando e enviando o token como resposta */
@@ -61,5 +61,27 @@ module.exports = app => {
         res.send(false)
     }
 
-    return { signin, validateToken }
+    /**Pode-se validar aqui se a parte que está sendo acessada é acessível pelo usuário no
+    * front-end.
+    */
+    const validateAdmin = async (req, res) => {
+        const userData = req.body || null
+        try {
+            const token = jwt.decode(userData.token, authSecret)
+            const user = await app.db('users')
+                .where({ email: token.email})
+                .whereNull('deletedAt')
+                .first()
+            if(user.admin && token.admin){
+                return res.send(true)
+            }
+            console.log('entrou aqui 1')
+        } catch(e) {
+            res.status(401).send('Você não tem permissão para acessar esta página!')
+        }
+        
+        return res.send(false)
+    }
+ 
+    return { signin, validateToken, validateAdmin }
 }

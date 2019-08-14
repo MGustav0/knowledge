@@ -1,5 +1,4 @@
 const admin = require('./admin')
-
 /**Essas são as únicas URLs que Não estarão sujeitas à validação do token, são públicas */
 module.exports = app => {
     app.post('/signup', app.api.user.save)
@@ -57,4 +56,7 @@ module.exports = app => {
     app.route('/stats')
         .all(app.config.passport.authenticate())
         .get(app.api.stat.get)
+
+    /**Execução da validação de entrada nas rotas do back-end */
+    app.post('/validateAdmin', app.api.auth.validateAdmin)
 }

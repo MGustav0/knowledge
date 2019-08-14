@@ -24,3 +24,5 @@ Vue.toasted.register(
     payload => !payload.msg ? 'Ops... Erro inesperado.' : payload.msg,
     { type : 'error', icon : 'times' }
 )
+
+/**Ao criar o arquivo não se esqueça de ir no main.js registrar o import */

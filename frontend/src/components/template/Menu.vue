@@ -51,6 +51,13 @@ export default {
                 name: 'articlesByCategory',
                 params: { id: node.id }
             })
+
+            /**Esse teste faz uso do arquivo config/mq.js, assim que o dispositivo mudar de resolução
+             * para menor, ele irá fechar o menu, logo após o clique
+             */
+            if(this.$mq === 'xs' || this.$mq === 'sm') {
+                this.$store.commit('toggleMenu', false)
+            }
         }
     },
     mounted() {

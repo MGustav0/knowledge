@@ -1,6 +1,8 @@
 import Vue from 'vue'
 /**Terá coisas que serão usadas em vários componentes */
 
+/**Criar variável para acesso ao local storage (browser) */
+export const userKey = '__kowledge_user'
 /**Apontando para API do backend. Alterar quando colocar em produção */
 export const baseApiUrl = 'http://localhost:4000'
 
@@ -15,4 +17,4 @@ export function showError(e) {
     }
 }
 
-export default { baseApiUrl, showError }
+export default { baseApiUrl, showError, userKey }
