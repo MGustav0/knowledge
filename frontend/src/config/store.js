@@ -2,6 +2,8 @@ import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+/**Área de armazenamento para compartilhar dados entre os componentes */
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
